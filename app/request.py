@@ -1,3 +1,4 @@
+from typing import Any
 from app import app
 import urllib.request,json
 from .models import movie
@@ -53,12 +54,10 @@ def process_results(movie_list):
 
   return movie_results
 def get_movie(id):
-    get_movie_details_url = base_url.format(id,api_key)
-
+    get_movie_details_url = base_url.format(id, api_key)
     with urllib.request.urlopen(get_movie_details_url) as url:
         movie_details_data = url.read()
         movie_details_response = json.loads(movie_details_data)
-
         movie_object = None
         if movie_details_response:
             id = movie_details_response.get('id')
@@ -67,11 +66,9 @@ def get_movie(id):
             poster = movie_details_response.get('poster_path')
             vote_average = movie_details_response.get('vote_average')
             vote_count = movie_details_response.get('vote_count')
-
-            movie_object = Movie(id,title,overview,poster,vote_average,vote_count)
-
-    return movie_object
-
+            movie_object = Movie(id, title, overview, poster, vote_average, vote_count)
+            print(base_url)
+    return movie_object  # returns the specific movie
 def search_movie(movie_name):
     search_movie_url = 'https://api.themoviedb.org/3/search/movie?api_key={}&query={}'.format(api_key,movie_name)
     with urllib.request.urlopen(search_movie_url) as url:
